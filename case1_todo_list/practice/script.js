@@ -5,6 +5,8 @@
     return document.querySelector(target)
   }
 
+  const $todos = get('.todos')
+
   const createTodoElement = (item) => {
     const { id, content } = item
     const $todoItem = document.createElement('div')
@@ -39,6 +41,24 @@
     return $todoItem
   }
 
+  const renderAllTodos = (todos) => {
+    $todos.innerHTML = ''
+    todos.forEach((item) => {
+      const todoElement = createTodoElement(item)
+      $todos.appendChild(todoElement)
+    })
+  }
+
+  const getTodos = () => {
+    fetch('http://localhost:3000/todos')
+      .then((response) => response.json())
+      .then((todos) => renderAllTodos(todos))
+      .catch((error) => console.error(error))
+  }
+
   const init = () => {}
+  window.addEventListener('DOMContentLoaded', () => {
+    getTodos()
+  })
   init()
 })()
